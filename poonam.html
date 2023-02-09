@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pendulum Simulation</title>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.dom.js"></script>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let pendulum;
+
+      function setup() {
+        createCanvas(400, 400);
+        pendulum = new Pendulum(width / 2, 0, 175);
+      }
+
+      function draw() {
+        background(255);
+        pendulum.go();
+      }
+
+      class Pendulum {
+        constructor(x, y, r) {
+          this.origin = createVector(x, y);
+          this.position = createVector(x, y + r);
+          this.r = r;
+          this.a = PI / 4;
+          this.aVel = 0;
+          this.aAcc = 0.0001;
+        }
+
+        go() {
+          this.update();
+          this.display();
+        }
+
+        update() {
+          this.aAcc = -0.01 * sin(this.a);
+          this.aVel += this.aAcc;
+          this.a += this.aVel;
+          this.position.x = this.origin.x + this.r * sin(this.a);
+          this.position.y = this.origin.y + this.r * cos(this.a);
+        }
+
+        display() {
+          stroke(0);
+          strokeWeight(2);
+          fill(175);
+          line(this.origin.x, this.origin.y, this.position.x, this.position.y);
+          ellipse(this.position.x, this.position.y, 32, 32);
+        }
+      }
+    </script>
+  </body>
+</html>
